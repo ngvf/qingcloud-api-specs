@@ -5,7 +5,7 @@
 
 #### Specification
 - API 接口都以 [OpenAPI Specification (Swagger) v2.0](https://swagger.io/specification/v2/) 为规范, 推荐使用json格式。
-- 在此基础上，添加自定义参数，具体请参考[creating-swagger](https://git.internal.yunify.com/cloud-mgmt-dept/qingcloud-api-specs/doc/creating-swagger.md)
+- 在此基础上，添加自定义参数，具体请参考[creating-swagger](./doc/creating-swagger.md)
 
 | param | type | description | comment |
 | --- | --- | --- | --- |
@@ -52,7 +52,7 @@
 #### Usage
 
 1. 请按照 doc 中的规范编写 API spec 文件。
-2. 按照 [check-list](https://git.internal.yunify.com/cloud-mgmt-dept/qingcloud-api-specs/doc/swagger-checklist.md) 对 spec 文件进行检查。
+2. 按照 [check-list](./doc/swagger-checklist.md) 对 spec 文件进行检查。
 3. 根据检查后的反馈进行修改，然后 push。
 
 CI
@@ -66,8 +66,3 @@ CI
 1. 建议基于接口描述来自动生成 **sdk/cli/request model(调用层)** 代码。 
 1. 有些 **接口/参数/返回** 是区分普通用户和管理员权限的，可通过设置“x-scope”参数区分（用于生成 **公开版和私有版** 的代码或文档），目前 snips 支持在 manifest 配置 scope。
 1. 基于接口描述生成 API 接口文档，在spec中需要有相应的 **示例** （x-example）和 **中英文描述说明**（英文默认使用 "description" 参数，中文以及其他语言在 "x-description" 中设置），目前 snips 支持在 manifest 配置 language。
-
-
-#### TODO
-- [ ] scripts: 完成基于gitlab检查脚本。
-- [ ] test: 添加测试脚本。
