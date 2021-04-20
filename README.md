@@ -50,7 +50,7 @@
 
 
 #### Usage
-
+![](./use.png)
 1. 请按照 doc 中的规范编写 API spec 文件。
 2. 按照 [check-list](./doc/swagger-checklist.md) 对 spec 文件进行检查。
 3. 根据检查后的反馈进行修改，然后 push。
