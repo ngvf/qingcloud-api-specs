@@ -1,0 +1,46 @@
+extends: [[spectral:oas, off]]
+rules:
+  # x-description:
+  #   description: Please provide a x-description for each tag.
+  #   given: $..[?(@.description)]
+  #   severity: error
+  #   then:
+  #     field: x-description
+  #     function: truthy
+
+  x-description-rule:
+    description: Please provide a x-description for {{property}}.
+    message: Please provide a x-description for {{property}}.
+    given: 
+      - $.paths[*][get,post,put,patch,delete,options]
+      - $.paths[*].parameters[*]
+      - $.paths[*][*].parameters[*]
+      - $.paths[*][*].parameters[*].schema.properties[*]
+      - $.paths[*][*].responses[*]
+      - $.paths[*][*].responses[*].schema.properties[*]
+      - $.definitions[*]
+    severity: error
+    then:
+      field: x-description
+      function: truthy
+
+  description-rule:
+    description: Please provide a description for {{property}}.
+    message: Please provide a description for {{property}}.
+    given: 
+      - $.paths[*][*].parameters[*].schema.properties[*]
+      - $.paths[*][*].responses[*].schema.properties[*]
+    severity: error
+    then:
+      field: x-description
+      function: truthy
+
+  example-rule:
+    description: Please provide a x-example for {{property}}.
+    message: Please provide a x-example for {{property}}.
+    given: 
+      - $.paths[*][get,post,put,patch,delete,options]
+    severity: error
+    then:
+      field: x-example
+      function: truthy

@@ -1,0 +1,23 @@
+{
+  "default": {
+    "description": "Example1",
+    "x-description": {
+      "zh": "示例1"
+    },
+    "parameters": {
+      "action": "ModifyImageAttributes",
+      "image": "img-rtyv0968",
+      "image_name": "sample",
+      "description": "staging_env",
+      "zone": "pek3a"
+    },
+    "responses": {
+      "200": {
+        "body": {
+          "action":"ModifyImageAttributesResponse",
+          "ret_code":0
+        }
+      }
+    }
+  }
+}

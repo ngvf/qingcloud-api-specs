@@ -1,0 +1,108 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version":"2013-08-30",
+    "title":"MyService",
+    "description":"Description of MyService",
+    "x-description": {
+        "zh": "服务的中文描述说明。"
+    }
+  },
+  "host": "api.qingcloud.com",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    /*
+     * Fill out this section with your path definitions, then remove this comment
+
+    "/DescribeImages":{
+        "get":{
+            "tags":[
+                "Image"
+            ],
+        "operationId":"DescribeImages",
+        "summary":"DescribeImages",
+        "description":"Describe images filtered by condition.",
+        "x-description":{
+            "zh":"获取一个或多个映像"
+        },
+        "externalDocs":{
+            "url":"https://docs.qingcloud.com/api/image/describe_images.html"
+        },
+        "parameters":[
+            {
+               "name": "parameter1",
+                "in": "query",
+                "type": "string"
+                "description":"parameter1.",
+                "x-description":{
+                    "zh":"参数1"
+                },
+            }
+        ],
+        "responses":{
+            "200":{
+                "description":"OK",
+                "x-description":{
+                    "zh":"OK"
+                },
+                "schema":{
+                    "type":"object",
+                    "properties":{
+                        "action":{
+                            "$ref":"../definitions.json#/definitions/action"
+                        },
+                        "ret_code":{
+                            "$ref":"../definitions.json#/definitions/ret_code"
+                        }
+                    }
+                }
+            }
+        },
+        "x-example": {
+            "$ref": "./example/DescribeImages.json"
+        }
+        }
+    }
+    */
+  },
+  "definitions": {
+    /*
+     * Fill out this section with your model definitions, then remove this comment
+
+    "Pet": {
+      "description": "A pet.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The name of the pet.",
+          "type": "string",
+        }
+      }
+    }
+    */
+  },
+  "parameters": {
+    /*
+     * Fill out this section with your model parameters, then remove this comment
+
+    "zone": {
+        "name": "zone",
+        "description": "QingCloud Zone ID",
+        "x-description": {
+        "zh": "青云区域ID"
+      },
+        "type": "string",
+        "required": true,
+        "in": "query"
+    }
+  }
+  */
+}

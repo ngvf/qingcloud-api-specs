@@ -1,0 +1,40 @@
+{
+  "default": {
+    "description": "Example1",
+    "x-description": {
+      "zh": "示例1"
+    },
+     "parameters": {
+    "action": "DescribeVolumes",
+    "status": "in-use",
+    "zone": "pek3a"
+  },
+  "responses": {
+    "200": {
+      "body": {
+          "action":"DescribeVolumesResponse",
+          "total_count":1,
+          "volume_set":[
+            {
+              "status":"in-use",
+              "description":null,
+              "volume_name":"vol 2",
+              "sub_code":0,
+              "transition_status":"",
+              "instance":{
+                "instance_id":"i-ogbndull",
+                "instance_name":"",
+                "device": "/dev/sdb"
+              },
+              "create_time":"2013-08-30T05:13:25Z",
+              "volume_id":"vol-g7xy7d6g",
+              "status_time":"2013-08-30T05:13:32Z",
+              "size":10
+            }
+          ],
+          "ret_code":0
+      }
+    }
+  }
+  }
+}

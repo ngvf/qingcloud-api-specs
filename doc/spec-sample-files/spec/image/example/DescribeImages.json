@@ -1,0 +1,40 @@
+{
+  "default": {
+    "description": "Example1",
+    "x-description": {
+      "zh": "示例1"
+    },
+    "parameters": {
+      "action": "DescribeImages"
+    },
+    "responses": {
+      "200": {
+        "body": {
+          "action":"DescribeImagesResponse",
+          "total_count":9,
+          "image_set":[
+            {
+              "status":"ceased",
+              "processor_type":"64bit",
+              "image_id":"img-37amqany",
+              "sub_code":1,
+              "transition_status":"",
+              "recommended_type":"small_b",
+              "image_name":"",
+              "visibility":"private",
+              "platform":"linux",
+              "create_time":"2013-08-07T18:16:32Z",
+              "os_family":"centos",
+              "provider":"self",
+              "owner":"usr-1234abcd",
+              "status_time":"2013-08-17T08:16:33Z",
+              "size":20,
+              "description":null
+            }
+          ],
+          "ret_code":0
+        }
+      }
+    }
+  }
+}

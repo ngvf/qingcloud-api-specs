@@ -1,0 +1,69 @@
+{
+	"definitions": {
+		"action": {
+			"description": "action",
+			"x-description": {
+				"zh": "响应动作"
+			},
+            "type": "string"
+        },
+        "ret_code": {
+        	"description": "response code, 0 for success",
+        	"x-description": {
+				"zh": "执行成功与否，0 表示成功，其他值则为错误代码"
+			},
+            "type": "integer"
+        },
+        "job_id": {
+            "description": "job ID of the task to be executed.",
+            "x-description": {
+                "zh": "执行任务的 Job ID"
+            },
+            "type": "string"
+        },
+        "tags": {
+            "description": "filter by tags.",
+            "x-description": {
+                "zh": "按照标签ID过滤。"
+            },
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "verbose": {
+            "type": "integer",
+            "description": "if verbose == 1, and list attachment detail.",
+            "x-description": {
+                "zh": "是否返回冗长的信息，目前 verbose 只支持为 0。"
+            },
+            "default": 0,
+            "enum": [
+                0
+            ]
+        },
+        "owner": {
+            "description": "filter by owner.",
+            "x-description": {
+                "zh": "根据拥有者筛选。"
+            },
+            "type": "string"
+        },
+        "offset": {
+            "description": "the starting offset of the returning results.",
+            "x-description": {
+                "zh": "数据偏移量，默认为0。"
+            },
+            "type": "integer",
+            "default": 0
+        },
+        "limit": {
+            "description": "specify the number of the returning results.",
+            "x-description": {
+                "zh": "返回数据长度，默认为20，最大100。"
+            },
+            "type": "integer",
+            "default": 20
+        }
+	}
+}

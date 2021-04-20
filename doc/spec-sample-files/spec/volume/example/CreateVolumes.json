@@ -1,0 +1,24 @@
+{
+  "default": {
+    "description": "Example1",
+    "x-description": {
+      "zh": "示例1"
+    },
+    "parameters": {
+    "action": "CreateVolumes",
+    "volume_name": "demo",
+    "size": 20,
+    "zone": "pek3a"
+  },
+  "responses": {
+    "200": {
+      "body": {
+        "action":"CreateVolumesResponse",
+        "job_id":"j-bm6ym3r8",
+        "volumes":["vol-j38f2h3h"],
+        "ret_code":0
+      }
+    }
+  }
+  }
+}
