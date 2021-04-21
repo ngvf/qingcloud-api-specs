@@ -23,7 +23,9 @@ git submodule init
 ```
 添加子项目依赖
 ```shell
-git git submodule add -b master https://git.internal.yunify.com/{path-to}/{your-api-specs.git} specification/{your-project-name}
+git submodule add -b master \
+  https://git.internal.yunify.com/{path-to}/{your-api-specs.git} \
+  specification/{your-project-name}
 ```
 提交配置
 ```shell
