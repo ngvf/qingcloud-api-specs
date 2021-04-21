@@ -29,7 +29,7 @@ echo "-----------------------------------------------------"
 
 RE_TEXT=$(docker run --volume $WORK_PATH:/data qingcloud/openapi-tools \
 	./json-pretty  \
-	-d /data/spec  \
+	-d /data/specs  \
 	-r true)
 
 RET=$?
@@ -46,7 +46,7 @@ docker run --volume $WORK_PATH:/data:ro qingcloud/openapi-tools \
 	lint-openapi \
 	-r ./spectral.yml \
 	-c ./validaterc \
-	/data/spec/api-profile.json
+	/data/specs/api-profile.json
 
 RET=$?
 if [ ! $RET -eq 0 ]; then
@@ -61,7 +61,7 @@ cd $TEMP_PATH
 git init . 
 git remote add -f origin git@git.internal.yunify.com:Ryan/qingcloud-api-specs.git
 git config core.sparsecheckout true
-echo "spec/" >> .git/info/sparse-checkout
+echo "specs/" >> .git/info/sparse-checkout
 git pull origin dev
 
 
@@ -70,7 +70,7 @@ docker run --volume $WORK_PATH:/data:ro \
   	qingcloud/openapi-tools \
   	java -jar ./openapi-diff-cli.jar \
   	--fail-on-incompatible \
-  	/temp/spec/api-profile.json /data/spec/api-profile.json
+  	/temp/specs/api-profile.json /data/specs/api-profile.json
 
 RET=$?
 if [ ! $RET -eq 0 ]; then

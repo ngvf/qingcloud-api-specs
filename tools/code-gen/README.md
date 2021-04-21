@@ -13,7 +13,7 @@ $ go build snips
 
 ## Template
 - 按照业务需求编写生成模板(golang tmpl)
-- 可参考[相关文档](/doc/code-gen/snips.md)
+- 可参考[相关文档](/documentation/code-gen/snips.md)
 
 ## Usage
 

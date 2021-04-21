@@ -63,7 +63,7 @@ lint-openapi [options] [command] [<files>]
 简单介绍下较与默认配置，修改添加了哪些配置文件
 
 #### **validterc**
-统一命名风格，详情见[openapi-authoring-manual-guidelines](../doc/openapi-authoring-manual-guidelines.md)
+统一命名风格，详情见[openapi-authoring-manual-guidelines](../documentation/openapi-authoring-manual-guidelines.md)
 ```json
 
 "shared": {
@@ -84,7 +84,7 @@ lint-openapi [options] [command] [<files>]
 
 
 #### **spectral.yaml**
-自定义参数校验, 详情见[openapi-authoring-automated-guidelines.md](../doc/openapi-authoring-automated-guidelines.md.md)
+自定义参数校验, 详情见[openapi-authoring-automated-guidelines.md](../documentation/openapi-authoring-automated-guidelines.md.md)
 
 ```yaml 
 extends: [[spectral:oas, off]]
