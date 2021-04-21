@@ -1,4 +1,0 @@
-[submodule "specs/qingcloud"]
-	path = specs/qingcloud
-	url = git@git.internal.yunify.com:Ryan/qingcloud-api-specs.git
-	branch = master
