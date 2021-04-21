@@ -58,6 +58,7 @@ fi
 echo "-----------------------------------------------------"
 
 cd $TEMP_PATH
+rm -rf .git ./specs
 git init . 
 git remote add -f origin git@git.internal.yunify.com:Ryan/qingcloud-api-specs.git
 git config core.sparsecheckout true
