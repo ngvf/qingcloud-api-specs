@@ -6,15 +6,17 @@
     },
     "parameters": {
       "action": "DeleteImages",
-      "images": ["img-uydrnlax"],
+      "images": [
+        "img-uydrnlax"
+      ],
       "zone": "pek3a"
     },
     "responses": {
       "200": {
         "body": {
-          "action":"DeleteImagesResponse",
-          "job_id":"j-bm6ym3r8",
-          "ret_code":0
+          "action": "DeleteImagesResponse",
+          "job_id": "j-bm6ym3r8",
+          "ret_code": 0
         }
       }
     }

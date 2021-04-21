@@ -106,6 +106,6 @@ WORKDIR /app
 COPY ./pretty-plugin/json-pretty \
 	./code-gen/snips \
 	./swagger-validation/openapi-validation \
-	./swagger-validation/openapi-diff/swagger-diff.jar \
+	./swagger-validation/openapi-diff/openapi-diff-cli.jar \
 	/app/
 

@@ -1,18 +1,18 @@
 {
-    "swagger":"2.0",
-    "info": {
-      "version": "2013-08-30",
-      "title": "QingCloud",
-      "description": "QingCloud provides a platform which can make the delivery of computing resources more simple, efficient and reliable, even more environmental.",
-      "termsOfService": "https://www.qingcloud.com/about/tos",
-      "license": {
-        "name": "The Apache License (Version 2)",
-        "url": "https://www.apache.org/licenses/LICENSE-2.0"
-      },
-      "contact": {
-        "name": "Yunify SDK Group",
-        "email": "sdk_group@yunify.com"
-      }
+  "swagger": "2.0",
+  "info": {
+    "version": "2013-08-30",
+    "title": "QingCloud",
+    "description": "QingCloud provides a platform which can make the delivery of computing resources more simple, efficient and reliable, even more environmental.",
+    "termsOfService": "https://www.qingcloud.com/about/tos",
+    "license": {
+      "name": "The Apache License (Version 2)",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    },
+    "contact": {
+      "name": "Yunify SDK Group",
+      "email": "sdk_group@yunify.com"
+    }
   },
   "schemes": [
     "http",
@@ -23,26 +23,24 @@
   "paths": {
     "/DescribeImages": {
       "$ref": "./image/image.json#/paths/~1DescribeImages"
-   	},
-   	"/DeleteImages": {
+    },
+    "/DeleteImages": {
       "$ref": "./image/image.json#/paths/~1DeleteImages"
-   	},
-   	"/ModifyImageAttributes": {
+    },
+    "/ModifyImageAttributes": {
       "$ref": "./image/image.json#/paths/~1ModifyImageAttributes"
-   	},
-
-   	"/DescribeAccessKeys": {
+    },
+    "/DescribeAccessKeys": {
       "$ref": "./access_key/access_key.json#/paths/~1DescribeAccessKeys"
-   	},
-   	"/DeleteAccessKeys": {
+    },
+    "/DeleteAccessKeys": {
       "$ref": "./access_key/access_key.json#/paths/~1DeleteAccessKeys"
-   	},
-
-   	"/DescribeVolumes": {
+    },
+    "/DescribeVolumes": {
       "$ref": "./volume/volume.json#/paths/~1DescribeVolumes"
-   	},
-   	"/CreateVolumes": {
+    },
+    "/CreateVolumes": {
       "$ref": "./volume/volume.json#/paths/~1CreateVolumes"
-   	}
+    }
   }
 }

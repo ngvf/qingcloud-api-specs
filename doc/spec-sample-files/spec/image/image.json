@@ -1,422 +1,421 @@
 {
-    "swagger":"2.0",
-    "info":{
-        "version":"2013-08-30",
-        "title":"Image",
-        "description":"Image is a instance template with operating system",
+  "swagger": "2.0",
+  "info": {
+    "version": "2015-08-30",
+    "title": "image",
+    "description": "Image is a instance template with operating system",
+    "x-description": {
+      "zh": "映像 (Image) 是带有操作系统的主机模板。"
+    }
+  },
+  "host": "api.qingcloud.com",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "basePath": "/iaas",
+  "paths": {
+    "/DescribeImages": {
+      "parameters": [
+        {
+          "$ref": "../parameters.json#/parameters/zone"
+        }
+      ],
+      "get": {
+        "tags": [
+          "image"
+        ],
+        "operationId": "DescribeImages",
+        "summary": "DescribeImages",
+        "description": "Describe images filtered by condition.",
         "x-description": {
-            "zh": "映像 (Image) 是带有操作系统的主机模板。"
-        }
-    },
-    "host":"api.qingcloud.com",
-    "schemes":[
-        "http",
-        "https"
-    ],
-    "consumes": [
-        "application/json"
-    ],
-    "produces": [
-        "application/json"
-    ],
-    "basePath":"/iaas",
-    "paths":{
-        "/DescribeImages":{
-            "parameters":[
-                {
-                    "$ref": "../parameters.json#/parameters/zone"
-                }
-            ],
-            "get":{
-                "tags":[
-                    "Image"
-                ],
-                "operationId":"DescribeImages",
-                "summary":"DescribeImages",
-                "description":"Describe images filtered by condition.",
-                "x-description":{
-                    "zh":"获取一个或多个映像"
-                },
-                "externalDocs":{
-                    "url":"https://docs.qingcloud.com/api/image/describe_images.html"
-                },
-                "parameters":[
-                    {
-                        "name":"body",
-                        "in":"body",
-                        "description":"body parameters",
-                        "x-description":{
-                            "zh":"body parameters"
-                        },
-                        "schema":{
-                            "type":"object",
-                            "properties":{
-                                "images":{
-                                    "$ref":"#/definitions/images"
-                                },
-                                "processor_type":{
-                                    "$ref":"#/definitions/processor_type"
-                                },
-                                "os_family":{
-                                    "$ref":"#/definitions/os_family"
-                                },
-                                "visibility":{
-                                    "$ref":"#/definitions/visibility"
-                                },
-                                "provider":{
-                                    "$ref":"#/definitions/provider"
-                                },
-                                "status":{
-                                    "$ref":"#/definitions/status"
-                                },
-                                "search_word":{
-                                    "type":"string",
-                                    "description":"the search word.",
-                                    "x-description":{
-                                        "zh":"搜索关键词，支持映像ID，映像名称。"
-                                    }
-                                },
-                                "verbose":{
-                                    "$ref":"../definitions.json#/definitions/verbose"
-                                },
-                                "owner":{
-                                    "$ref":"../definitions.json#/definitions/owner"
-                                },
-                                "tags":{
-                                    "$ref":"../definitions.json#/definitions/tags"
-                                },
-                                "offset":{
-                                    "$ref":"../definitions.json#/definitions/offset"
-                                },
-                                "limit":{
-                                    "$ref":"../definitions.json#/definitions/limit"
-                                }
-                            }
-                        }
-                    }
-                ],
-                "responses":{
-                    "200":{
-                        "description":"OK",
-                        "x-description":{
-                            "zh":"OK"
-                        },
-                        "schema":{
-                            "type":"object",
-                            "properties":{
-                                "action":{
-                                    "$ref":"../definitions.json#/definitions/action"
-                                },
-                                "ret_code":{
-                                    "$ref":"../definitions.json#/definitions/ret_code"
-                                },
-                                "total_count":{
-                                    "description":"total number of images based on filter conditions.",
-                                    "x-description":{
-                                        "zh":" 根据过滤条件得到的映像总数。"
-                                    },
-                                    "type":"integer"
-                                },
-                                "image_set":{
-                                    "description":"image data set.",
-                                    "x-description":{
-                                        "zh":" 映像数据列表。"
-                                    },
-                                    "type":"array",
-                                    "items":{
-                                        "$ref":"#/definitions/image"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "x-example": {
-                    "$ref": "./example/DescribeImages.json"
-                }
-            }
+          "zh": "获取一个或多个映像"
         },
-        "/DeleteImages":{
-            "parameters":[
-                {
-                    "$ref": "../parameters.json#/parameters/zone"
-                }
-            ],
-            "get":{
-                "tags":[
-                    "Image"
-                ],
-                "operationId":"DeleteImages",
-                "x-scope":"private",
-                "summary":"DeleteImages",
-                "description":"Delete one or more images.",
-                "x-description":{
-                    "zh":"删除一个或多个自有镜像。"
-                },
-                "externalDocs":{
-                    "url":"https://docs.qingcloud.com/api/image/delete_images.html"
-                },
-                "parameters":[
-                    {
-                        "name":"body",
-                        "in":"body",
-                        "description": "body parameters",
-                        "x-description":{
-                            "zh":"body parameters"
-                        },
-                        "schema":{
-                            "type":"object",
-                            "properties":{
-                                "image":{
-                                    "$ref":"#/definitions/image"
-                                }
-                            },
-                            "required":[
-                                "image"
-                            ]
-                        }
-                    }
-                ],
-                "responses":{
-                    "200":{
-                        "description":"OK",
-                        "x-description":{
-                            "zh":"OK"
-                        },
-                        "schema":{
-                            "type":"object",
-                            "properties":{
-                                "action":{
-                                    "$ref":"../definitions.json#/definitions/action"
-                                },
-                                "ret_code":{
-                                    "$ref":"../definitions.json#/definitions/ret_code"
-                                },
-                                "job_id":{
-                                    "$ref":"../definitions.json#/definitions/job_id"
-                                }
-                            }
-                        }
-                    }
-                },
-                "x-example": {
-                    "$ref": "./example/DeleteImages.json"
-                }
-            }
+        "externalDocs": {
+          "url": "describe_alarm_policies.html#api-describe-alarm-policies"
         },
-        "/ModifyImageAttributes":{
-            "parameters":[
-                {
-                    "$ref":"../parameters.json#/parameters/zone"
-                }   
-            ],
-            "get":{
-                "tags":[
-                    "Image"
-                ],
-                "operationId":"ModifyImageAttributes",
-                "summary":"ModifyImageAttributes",
-                "description":"Modify the name and description of the image.",
-                "x-description":{
-                    "zh":"修改映像的名称和描述。"
-                },
-                "externalDocs":{
-                    "url":"https://docs.qingcloud.com/api/image/modify_image_attributes"
-                },
-                "parameters":[
-                    {
-                        "name":"body",
-                        "in":"body",
-                        "description": "body parameters",
-                        "x-description":{
-                            "zh":"body parameters"
-                        },
-                        "schema":{
-                            "type":"object",
-                            "properties":{
-                                "image":{
-                                    "$ref":"#/definitions/image"
-                                },
-                                "image_name":{
-                                    "$ref":"#/definitions/image_name"
-                                },
-                                "description":{
-                                    "$ref":"#/definitions/description"
-                                }
-                            },
-                            "required":[
-                                "image"
-                            ]
-                        }
-                    }
-                ],
-                "responses":{
-                    "200":{
-                        "description":"OK",
-                        "x-description":{
-                            "zh":"OK"
-                        },
-                        "schema":{
-                            "type":"object",
-                            "properties":{
-                                "action":{
-                                    "$ref":"../definitions.json#/definitions/action"
-                                },
-                                "ret_code":{
-                                    "$ref":"../definitions.json#/definitions/ret_code"
-                                }
-                            }
-                        }
-                        
-                    }
-                },
-                "x-example": {
-                    "$ref": "./example/ModifyImageAttributes.json"
-                }
-            }
-        }
-    },
-    "definitions":{
-        "image":{
-            "description":"image data set",
-            "x-description":{
-                "zh":"映像数据列表。"
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "body parameters",
+            "x-description": {
+              "zh": "body parameters"
             },
-            "type":"object",
-            "properties": {
-                "image_id": {
-                    "$ref": "#/definitions/image_id"
-                },
-                "image_name": {
-                    "$ref": "#/definitions/image_name"
-                },
-                "description": {
-                   "$ref": "#/definitions/description"
-                },
-                "size": {
-                    "$ref": "#/definitions/size"
+            "schema": {
+              "type": "object",
+              "properties": {
+                "images": {
+                  "$ref": "#/definitions/images"
                 },
                 "processor_type": {
-                    "$ref": "#/definitions/processor_type"
+                  "$ref": "#/definitions/processor_type"
                 },
                 "os_family": {
-                    "$ref": "#/definitions/os_family"
+                  "$ref": "#/definitions/os_family"
                 },
                 "visibility": {
-                    "$ref": "#/definitions/visibility"
+                  "$ref": "#/definitions/visibility"
                 },
                 "provider": {
-                    "$ref": "#/definitions/provider"
-                },
-                "owner": {
-                    "$ref": "../definitions.json#/definitions/owner"
+                  "$ref": "#/definitions/provider"
                 },
                 "status": {
-                    "$ref": "#/definitions/status"
+                  "$ref": "#/definitions/status"
+                },
+                "search_word": {
+                  "type": "string",
+                  "x-scope": "private",
+                  "description": "the search word.",
+                  "x-description": {
+                    "zh": "搜索关键词，支持映像ID，映像名称。"
+                  }
+                },
+                "verbose": {
+                  "$ref": "../definitions.json#/definitions/verbose"
+                },
+                "owner": {
+                  "$ref": "../definitions.json#/definitions/owner"
+                },
+                "tags": {
+                  "$ref": "../definitions.json#/definitions/tags"
+                },
+                "offset": {
+                  "$ref": "../definitions.json#/definitions/offset"
+                },
+                "limit": {
+                  "$ref": "../definitions.json#/definitions/limit"
                 }
+              }
             }
-        },
-        "images":{
-            "type":"array",
-            "description":"an array including IDs of the images you want to list.No ID specified means list all.",
-            "x-description":{
-                "zh":"映像ID。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "x-description": {
+              "zh": "OK"
             },
-            "items":{
-                "type":"string"
+            "schema": {
+              "type": "object",
+              "properties": {
+                "action": {
+                  "$ref": "../definitions.json#/definitions/action"
+                },
+                "ret_code": {
+                  "$ref": "../definitions.json#/definitions/ret_code"
+                },
+                "total_count": {
+                  "description": "total number of images based on filter conditions.",
+                  "x-description": {
+                    "zh": " 根据过滤条件得到的映像总数。"
+                  },
+                  "type": "integer"
+                },
+                "image_set": {
+                  "$ref": "#/definitions/image_set"
+                }
+              }
             }
+          }
         },
-        "image_id":{
-            "description":"image id",
-            "x-description":{
-                "zh":"映像ID"
-            },
-            "type":"string"
-        },
-        "image_name":{
-            "description":"image name",
-            "x-description":{
-                "zh":"映像名称"
-            },
-            "type":"string"
-        },
-        "description":{
-            "description":"description of image",
-            "x-description":{
-                "zh":"映像描述"
-            },
-            "type":"string"
-        },
-        "size":{
-            "description":"The size of the image space, GB",
-            "x-description":{
-                "zh":"映像空间大小，单位为 GB"
-            },
-            "type":"integer"
-        },
-        "processor_type":{
-            "type":"string",
-            "description":"supported processor types are `64bit` and `32bit`.",
-            "x-description":{
-                "zh":"映像支持的处理器类型，有效值为 64bit 和 32bit。"
-            },
-            "enum":[
-                "64bit",
-                "32bit"
-            ]
-        },
-        "os_family":{
-            "type":"string",
-            "description":"os family, windows/debian/centos/ubuntu.",
-            "x-description":{
-                "zh":"映像操作系统发行版，有效值为 centos，ubuntu，debian 和 windows 等"
-            }
-        },
-        "visibility":{
-            "type":"string",
-            "description":"who can see and use this image. Valid values include public, private.",
-            "x-description":{
-                "zh":"映像的可见范围，有效值为 public 和 private。"
-            },
-            "enum":[
-                "public",
-                "private"
-            ]
-        },
-        "provider":{
-            "type":"string",
-            "description":"who provide this image, self, system.",
-            "x-description":{
-                "zh":"映像提供者。初始青云系统会提供一系列默认映像，其 provider 为 system 。 当用户捕获云服务器后，被捕获的“自有”映像的 provider 为 self 。"
-            },
-            "enum":[
-                "system",
-                "self"
-            ]
-        },
-        "status":{
-            "type":"array",
-            "description":"valid values include pending, available, deleted, ceased.",
-            "x-description":{
-                "zh":"映像状态: pending, available, deprecated, suspended, deleted, ceased。"
-            },
-            "items":{
-                "type":"string",
-                "enum":[
-                    "pending",
-                    "available",
-                    "deprecated",
-                    "suspended",
-                    "deleted",
-                    "ceased"
-                ]
-            }
+        "x-example": {
+          "$ref": "./example/DescribeImages.json"
         }
+      }
     },
-    "parameters":{
-
+    "/DeleteImages": {
+      "parameters": [
+        {
+          "$ref": "../parameters.json#/parameters/zone"
+        }
+      ],
+      "get": {
+        "tags": [
+          "image"
+        ],
+        "operationId": "DeleteImages",
+        "x-scope": "private",
+        "summary": "DeleteImages",
+        "description": "Delete one or more images.",
+        "x-description": {
+          "zh": "删除一个或多个自有镜像。"
+        },
+        "externalDocs": {
+          "url": "https://docs.qingcloud.com/api/image/delete_images.html"
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "body parameters",
+            "x-description": {
+              "zh": "body parameters"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "images": {
+                  "$ref": "#/definitions/images"
+                }
+              },
+              "required": [
+                "image"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "x-description": {
+              "zh": "OK"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "action": {
+                  "$ref": "../definitions.json#/definitions/action"
+                },
+                "ret_code": {
+                  "$ref": "../definitions.json#/definitions/ret_code"
+                },
+                "job_id": {
+                  "$ref": "../definitions.json#/definitions/job_id"
+                }
+              }
+            }
+          }
+        },
+        "x-example": {
+          "$ref": "./example/DeleteImages.json"
+        }
+      }
     },
-    "responses":{
-
+    "/ModifyImageAttributes": {
+      "parameters": [
+        {
+          "$ref": "../parameters.json#/parameters/zone"
+        }
+      ],
+      "get": {
+        "tags": [
+          "image"
+        ],
+        "operationId": "ModifyImageAttributes",
+        "summary": "ModifyImageAttributes",
+        "description": "Modify the name and description of the image.",
+        "x-description": {
+          "zh": "修改映像的名称和描述。"
+        },
+        "externalDocs": {
+          "url": "https://docs.qingcloud.com/api/image/modify_image_attributes"
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "body parameters",
+            "x-description": {
+              "zh": "body parameters"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "image": {
+                  "$ref": "#/definitions/image_id"
+                },
+                "image_name": {
+                  "$ref": "#/definitions/image_name"
+                },
+                "description": {
+                  "$ref": "#/definitions/description"
+                }
+              },
+              "required": [
+                "image"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "x-description": {
+              "zh": "OK"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "action": {
+                  "$ref": "../definitions.json#/definitions/action"
+                },
+                "ret_code": {
+                  "$ref": "../definitions.json#/definitions/ret_code"
+                }
+              }
+            }
+          }
+        },
+        "x-example": {
+          "$ref": "./example/ModifyImageAttributes.json"
+        }
+      }
     }
+  },
+  "definitions": {
+    "image_set": {
+      "description": "image data set.",
+      "x-description": {
+        "zh": " 映像数据列表。"
+      },
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/image"
+      }
+    },
+    "image": {
+      "description": "image data set",
+      "x-description": {
+        "zh": "映像数据列表。"
+      },
+      "type": "object",
+      "properties": {
+        "image_id": {
+          "$ref": "#/definitions/image_id"
+        },
+        "image_name": {
+          "$ref": "#/definitions/image_name"
+        },
+        "description": {
+          "$ref": "#/definitions/description"
+        },
+        "size": {
+          "$ref": "#/definitions/size"
+        },
+        "processor_type": {
+          "$ref": "#/definitions/processor_type"
+        },
+        "os_family": {
+          "$ref": "#/definitions/os_family"
+        },
+        "visibility": {
+          "$ref": "#/definitions/visibility"
+        },
+        "provider": {
+          "$ref": "#/definitions/provider"
+        },
+        "owner": {
+          "$ref": "../definitions.json#/definitions/owner"
+        },
+        "status": {
+          "$ref": "#/definitions/status"
+        }
+      }
+    },
+    "images": {
+      "type": "array",
+      "description": "an array including IDs of the images you want to list.No ID specified means list all.",
+      "x-description": {
+        "zh": "映像ID。"
+      },
+      "items": {
+        "type": "string"
+      }
+    },
+    "image_id": {
+      "description": "image id",
+      "x-description": {
+        "zh": "映像ID"
+      },
+      "type": "string"
+    },
+    "image_name": {
+      "description": "image name",
+      "x-description": {
+        "zh": "映像名称"
+      },
+      "type": "string"
+    },
+    "description": {
+      "description": "description of image",
+      "x-description": {
+        "zh": "映像描述"
+      },
+      "type": "string"
+    },
+    "size": {
+      "description": "The size of the image space, GB",
+      "x-description": {
+        "zh": "映像空间大小，单位为 GB"
+      },
+      "type": "integer"
+    },
+    "processor_type": {
+      "type": "string",
+      "description": "supported processor types are `64bit` and `32bit`.",
+      "x-description": {
+        "zh": "映像支持的处理器类型，有效值为 64bit 和 32bit。"
+      },
+      "enum": [
+        "64bit",
+        "32bit"
+      ]
+    },
+    "os_family": {
+      "type": "string",
+      "description": "os family, windows/debian/centos/ubuntu.",
+      "x-description": {
+        "zh": "映像操作系统发行版，有效值为 centos，ubuntu，debian 和 windows 等"
+      }
+    },
+    "visibility": {
+      "type": "string",
+      "description": "who can see and use this image. Valid values include public, private.",
+      "x-description": {
+        "zh": "映像的可见范围，有效值为 public 和 private。"
+      },
+      "enum": [
+        "public",
+        "private"
+      ]
+    },
+    "provider": {
+      "type": "string",
+      "description": "who provide this image, self, system.",
+      "x-description": {
+        "zh": "映像提供者。初始青云系统会提供一系列默认映像，其 provider 为 system 。 当用户捕获云服务器后，被捕获的“自有”映像的 provider 为 self 。"
+      },
+      "enum": [
+        "system",
+        "self"
+      ]
+    },
+    "status": {
+      "type": "array",
+      "description": "valid values include pending, available, deleted, ceased.",
+      "x-description": {
+        "zh": "映像状态: pending, available, deprecated, suspended, deleted, ceased。"
+      },
+      "items": {
+        "type": "string",
+        "enum": [
+          "pending",
+          "available",
+          "deprecated",
+          "suspended",
+          "deleted",
+          "ceased"
+        ]
+      }
+    }
+  },
+  "parameters": {},
+  "responses": {}
 }

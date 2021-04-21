@@ -1,14 +1,14 @@
 {
-	"parameters": {
-		"zone": {
-		    "name": "zone",
-		    "description": "QingCloud Zone ID",
-		    "x-description": {
-				"zh": "青云区域ID"
-			},
-		    "type": "string",
-		    "required": true,
-		    "in": "query"
-		}
-	}
+  "parameters": {
+    "zone": {
+      "name": "zone",
+      "description": "QingCloud Zone ID",
+      "x-description": {
+        "zh": "青云区域ID"
+      },
+      "type": "string",
+      "required": true,
+      "in": "query"
+    }
+  }
 }

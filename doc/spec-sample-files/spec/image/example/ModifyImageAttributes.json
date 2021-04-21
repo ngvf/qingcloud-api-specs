@@ -14,8 +14,8 @@
     "responses": {
       "200": {
         "body": {
-          "action":"ModifyImageAttributesResponse",
-          "ret_code":0
+          "action": "ModifyImageAttributesResponse",
+          "ret_code": 0
         }
       }
     }

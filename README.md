@@ -14,6 +14,19 @@
 | x-example | object | 请求示例 | - |
 
  
+#### Use
+![](./use.png)
+1. 请按照 doc 中的规范编写 API spec 文件。
+2. 执行 [check 脚本](./script/README.md)，按照 [check-list](./doc/swagger-checklist.md) 对 spec 文件进行检查。
+	```sh
+	sh ./check-script.sh
+	```
+3. 根据检查后的反馈进行修改，然后 push。
+
+<!-- CI
+1. 生成 api spec 的 public 版本。
+2. 生成 api doc。 -->
+
  
 #### Directory Structure
 1. **doc**: 相关文档目录，关于 spec 书写规范，检查清单等。
@@ -47,17 +60,6 @@
 - 每个模块用对应的 **请求示例文件** (example)，示例文件应和 API operationId 同名。
 - **api-profile.json** 是所有 api 的 paths 汇总文件。
 - **parameters.json** 和 **definitions.json** 为公用 parameters/definitions 的定义文件。
-
-
-#### Usage
-![](./use.png)
-1. 请按照 doc 中的规范编写 API spec 文件。
-2. 按照 [check-list](./doc/swagger-checklist.md) 对 spec 文件进行检查。
-3. 根据检查后的反馈进行修改，然后 push。
-
-CI
-1. 生成 api spec 的 public 版本。
-2. 生成 api doc。
 
 
 #### Note

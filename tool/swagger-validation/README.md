@@ -145,103 +145,143 @@ warnings
 
 # openapi-diff<a name="open-diff"/>
 
-使用的是 [Sayi/swagger-diff](https://github.com/Sayi/swagger-diff) 提供两个 swagger 描述文件的对比，用于查找本次更新是否有影响向后兼容的问题。
+使用的是 [OpenAPITools/openapi-diff/](https://github.com/OpenAPITools/openapi-diff/) 提供两个 swagger 描述文件的对比，用于查找本次更新是否有影响向后兼容的问题。
 
 ## Installation
 
 ### Docker Build
 
 ```sh
-docker build -t sayi/openapi-diff .
+docker build -t local-openapi-diff .
 ```
 
 运行前需要将本机路径挂载至容器内 /specs 路径，用于读取spec 文件
 
 ```sh
-
 docker run --rm -t \
   -v $(pwd)/core/src/test/resources:/specs:ro \
-  sayi/openapi-diff:latest -old /specs/path_1.yaml -new /specs/path_2.yaml
+  openapitools/openapi-diff:latest /specs/path_1.yaml /specs/path_2.yaml
 ```
 
 ## Usage
 ### Command line
 
 ```sh
-$ java -jar swagger-diff.jar --help
-Usage: java -jar swagger-diff.jar [options]
-  Options:
-  * -old
-      old api-doc location:Json file path or Http url
-  * -new
-      new api-doc location:Json file path or Http url
-    -v
-      swagger version:1.0 or 2.0
-      Default: 2.0
-    -output-mode
-      render mode: markdown or html
-      Default: markdown
-    --help
-
-    --version
-      swagger-diff tool version
+$ openapi-diff --help
+usage: openapi-diff <old> <new>
+    --debug                     Print debugging information
+    --error                     Print error information
+ -h,--help                      print this message
+    --header <property=value>   use given header for authorisation
+    --html <file>               export diff as html in given file
+    --info                      Print additional information
+ -l,--log <level>               use given level for log (TRACE, DEBUG,
+                                INFO, WARN, ERROR, OFF). Default: ERROR
+    --markdown <file>           export diff as markdown in given file
+    --off                       No information printed
+    --query <property=value>    use query param for authorisation
+    --state                     Only output diff state: no_changes,
+                                incompatible, compatible
+    --fail-on-incompatible      Fail only if API changes broke backward compatibility
+    --fail-on-changed           Fail if API changed but is backward compatible
+    --trace                     be extra verbose
+    --version                   print the version information and exit
+    --warn                      Print warning information
 
 ```
 
 ### Example
 ```
-### What's New
----
-* `GET` /pet/{petId} Find pet by ID
+==========================================================================
+==                            API CHANGE LOG                            ==
+==========================================================================
+                             Swagger Petstore                             
+--------------------------------------------------------------------------
+--                              What's New                              --
+--------------------------------------------------------------------------
+- GET    /pet/{petId}
 
-### What's Deprecated
----
-* `POST` /pet/{petId} Updates a pet in the store with form data
+--------------------------------------------------------------------------
+--                            What's Deleted                            --
+--------------------------------------------------------------------------
+- POST   /pet/{petId}
 
-### What's Changed
----
-* `PUT` /pet Update an existing pet  
-    Parameter
+--------------------------------------------------------------------------
+--                          What's Deprecated                           --
+--------------------------------------------------------------------------
+- GET    /user/logout
 
-        Add body.newFeild //a feild demo by sayi
-        Add body.category.newCatFeild
-        Delete body.category.name
-* `POST` /pet Add a new pet to the store  
-    Parameter
-
-        Add tags //add new query param demo
-        Add body.newFeild //a feild demo by sayi
-        Add body.category.newCatFeild
-        Delete body.category.name
-* `DELETE` /pet/{petId} Deletes a pet  
-    Parameter
-
-        Add newHeaderParam
-* `POST` /pet/{petId}/uploadImage uploads an image for pet  
-    Parameter
-
-        petId change into not required Notes ID of pet to update change into ID of pet to update, default false
-* `POST` /user Create user  
-    Parameter
-
-        Add body.newUserFeild //a new user feild demo
-        Delete body.phone
-* `GET` /user/login Logs user into the system  
-    Parameter
-
-        Delete password //The password for login in clear text
-* `GET` /user/{username} Get user by user name  
-    Return Type
-
-        Add newUserFeild //a new user feild demo
-        Delete phone
-* `PUT` /user/{username} Updated user  
-    Parameter
-
-        Add body.newUserFeild //a new user feild demo
-        Delete body.phone
+--------------------------------------------------------------------------
+--                            What's Changed                            --
+--------------------------------------------------------------------------
+- PUT    /pet
+  Request:
+        - Deleted application/xml
+        - Changed application/json
+          Schema: Backward compatible
+- POST   /pet
+  Parameter:
+    - Add tags in query
+  Request:
+        - Changed application/xml
+          Schema: Backward compatible
+        - Changed application/json
+          Schema: Backward compatible
+- GET    /pet/findByStatus
+  Parameter:
+    - Deprecated status in query
+  Return Type:
+    - Changed 200 OK
+      Media types:
+        - Changed application/xml
+          Schema: Broken compatibility
+        - Changed application/json
+          Schema: Broken compatibility
+- GET    /pet/findByTags
+  Return Type:
+    - Changed 200 OK
+      Media types:
+        - Changed application/xml
+          Schema: Broken compatibility
+        - Changed application/json
+          Schema: Broken compatibility
+- DELETE /pet/{petId}
+  Parameter:
+    - Add newHeaderParam in header
+- POST   /pet/{petId}/uploadImage
+  Parameter:
+    - Changed petId in path
+- POST   /user
+  Request:
+        - Changed application/json
+          Schema: Backward compatible
+- POST   /user/createWithArray
+  Request:
+        - Changed application/json
+          Schema: Backward compatible
+- POST   /user/createWithList
+  Request:
+        - Changed application/json
+          Schema: Backward compatible
+- GET    /user/login
+  Parameter:
+    - Delete password in query
+- GET    /user/logout
+- GET    /user/{username}
+  Return Type:
+    - Changed 200 OK
+      Media types:
+        - Changed application/xml
+          Schema: Broken compatibility
+        - Changed application/json
+          Schema: Broken compatibility
+- PUT    /user/{username}
+  Request:
+        - Changed application/json
+          Schema: Backward compatible
+--------------------------------------------------------------------------
+--                                Result                                --
+--------------------------------------------------------------------------
+                 API changes broke backward compatibility                 
+--------------------------------------------------------------------------
 ```
-
-## TODO
-- [ ] 修改跨文件 ref 路径问题
-- [ ] 添加 "backward compatibility" 提醒
