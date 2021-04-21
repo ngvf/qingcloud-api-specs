@@ -25,7 +25,7 @@ if [ ! $RET -eq 0 ]; then
 fi
 
 echo "Starting..."
-echo "-----------------------------------------------------"
+echo "/**************************************************************************/"
 
 RE_TEXT=$(docker run --volume $WORK_PATH:/data qingcloud/openapi-tools \
 	./json-pretty  \
@@ -40,7 +40,7 @@ if [ ! $RET -eq 0 ]; then
 else
 	echo_color "[Info]: Passed json validatation" "green"
 fi
-echo "-----------------------------------------------------"
+echo "/**************************************************************************/"
 
 docker run --volume $WORK_PATH:/data:ro qingcloud/openapi-tools \
 	lint-openapi \
@@ -55,7 +55,7 @@ if [ ! $RET -eq 0 ]; then
 else
 	echo_color "[Info]: Passed swagger validatation" "green"
 fi
-echo "-----------------------------------------------------"
+echo "/**************************************************************************/"
 
 cd $TEMP_PATH
 rm -rf .git ./specs
@@ -75,9 +75,8 @@ docker run --volume $WORK_PATH:/data:ro \
 
 RET=$?
 if [ ! $RET -eq 0 ]; then
-	echo $RE_TEXT
 	echo_color "[Error]: API changes broke backward compatibility. You may need to update version" "red"
-    exit 1
+  exit 1
 else
 	echo_color "[Info]: Passed swagger comparison" "green"
 fi

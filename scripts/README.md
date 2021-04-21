@@ -60,6 +60,5 @@ From git.internal.yunify.com:Ryan/qingcloud-api-specs
                  API changes broke backward compatibility
 --------------------------------------------------------------------------
 
-passed the json validator
  [Error]: API changes broke backward compatibility. You may need to update version
 ```
