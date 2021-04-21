@@ -25,7 +25,7 @@ if [ ! $RET -eq 0 ]; then
 fi
 
 echo "Starting..."
-echo "/**************************************************************************/"
+echo "/************************** JSON VALIDATION **************************/"
 
 RE_TEXT=$(docker run --volume $WORK_PATH:/data qingcloud/openapi-tools \
 	./json-pretty  \
@@ -35,12 +35,12 @@ RE_TEXT=$(docker run --volume $WORK_PATH:/data qingcloud/openapi-tools \
 RET=$?
 if [ ! $RET -eq 0 ]; then
 	echo $RE_TEXT
-	echo_color "[Error]: Failed json validatation" "red"
+	echo_color "[Error]: Failed json validation" "red"
     exit 1
 else
-	echo_color "[Info]: Passed json validatation" "green"
+	echo_color "[Info]: Passed json validation" "green"
 fi
-echo "/**************************************************************************/"
+echo "/************************** SWAGGER VALIDATION **************************/"
 
 docker run --volume $WORK_PATH:/data:ro qingcloud/openapi-tools \
 	lint-openapi \
@@ -50,12 +50,12 @@ docker run --volume $WORK_PATH:/data:ro qingcloud/openapi-tools \
 
 RET=$?
 if [ ! $RET -eq 0 ]; then
-	echo_color "[Error]: Failed swagger validatation" "red"
+	echo_color "[Error]: Failed swagger validation" "red"
     exit 1
 else
-	echo_color "[Info]: Passed swagger validatation" "green"
+	echo_color "[Info]: Passed swagger validation" "green"
 fi
-echo "/**************************************************************************/"
+echo "/************************** SWAGGER DIFF **************************/"
 
 cd $TEMP_PATH
 rm -rf .git ./specs
@@ -81,6 +81,6 @@ else
 	echo_color "[Info]: Passed swagger comparison" "green"
 fi
 
-echo "-----------------------------------------------------"
+echo "/**************************** DONE ********************************/"
 
 echo_color "Finish~" "blue"

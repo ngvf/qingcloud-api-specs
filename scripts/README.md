@@ -18,10 +18,12 @@ GIT_BRANCH=dev
 
 # Example
 ```shell
+
+$ sh ./check-script.sh
 Starting...
------------------------------------------------------
- [Info]: Passed json validatation
------------------------------------------------------
+/************************** JSON VALIDATION **************************/
+ [Info]: Passed json validation
+/************************** SWAGGER VALIDATION **************************/
 
 warnings
 
@@ -29,8 +31,8 @@ warnings
   Path    :   paths./DeleteImages.get.parameters.0.schema.required[0]
   Line    :   26
 
- [Info]: Passed swagger validatation
------------------------------------------------------
+ [Info]: Passed swagger validation
+/************************** SWAGGER DIFF **************************/
 Initialized empty Git repository in /Users/liruiheng/Work/Temp/.git/
 Updating origin
 remote: Counting objects: 33, done.
@@ -61,4 +63,5 @@ From git.internal.yunify.com:Ryan/qingcloud-api-specs
 --------------------------------------------------------------------------
 
  [Error]: API changes broke backward compatibility. You may need to update version
+ 
 ```
