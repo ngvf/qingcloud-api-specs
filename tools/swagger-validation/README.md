@@ -24,17 +24,13 @@ npm install -g ibm-openapi-validator
 
 ### Docker
 
-拉取镜像
 ```sh
 
-docker pull jamescooke/openapi-validator
-
-```
-
-拉取后可直接运行，但是运行前，需要将本机目录挂载在容器内/data目录下，用于读取 api 描述文件以及 openapi-validator 的配置文件。
-```sh
-
-docker run --volume "$PWD":/data jamescooke/openapi-validator [options] [command] [<files>]
+docker run --volume $WORK_PATH:/data:ro qingcloud/openapi-tools \
+	lint-openapi \
+	-r ./spectral.yml \
+	-c ./validaterc \
+	/data/specs/api-profile.json
 
 ```
 
@@ -149,18 +145,14 @@ warnings
 
 ## Installation
 
-### Docker Build
-
+### Docker
 ```sh
-docker build -t local-openapi-diff .
-```
-
-运行前需要将本机路径挂载至容器内 /specs 路径，用于读取spec 文件
-
-```sh
-docker run --rm -t \
-  -v $(pwd)/core/src/test/resources:/specs:ro \
-  openapitools/openapi-diff:latest /specs/path_1.yaml /specs/path_2.yaml
+docker run --volume $WORK_PATH:/data:ro \
+	--volume $TARGET_BRACH_PATH:/target_brach:ro \
+  	qingcloud/openapi-tools \
+  	java -jar ./openapi-diff-cli.jar \
+  	--fail-on-incompatible \
+  	/target_brach/specs/api-profile.json /data/specs/api-profile.json
 ```
 
 ## Usage
