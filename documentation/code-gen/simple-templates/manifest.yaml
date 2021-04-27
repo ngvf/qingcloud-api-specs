@@ -35,8 +35,18 @@ template_files:
     # Relative file path to load service template file.
     # Default: service.tmpl
     file_path: service.tmpl
+
+    # make a new dir by service name
+    # Default: False
+    new_dir: True
+
+    # special path of service file
+    output_file_path: ./action
+
     # Naming options for output file.
     output_file_naming:
+      # rename file instead of  service name
+      name: qingcloud
       prefix: qs_
       suffix: _service
 
@@ -141,9 +151,13 @@ word_maps:
     Elasticsearch: ElasticSearch
 
 scope:
+  # scope of specs parsed
+  # Default: public
   public
 
 language:
+  # language of description
+  # Default: en
   en
 
 # Supporting files to copy directly.
