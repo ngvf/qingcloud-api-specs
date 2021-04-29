@@ -63,14 +63,16 @@ git submodule init
 ```
 添加子项目依赖
 ```shell
-git submodule add -b master \
-  https://git.internal.yunify.com/{path-to}/{your-api-specs.git} \
-  specification/{your-project-name}
+git submodule add -b {branch} \
+  ../../{group}/{project}.git \
+  specification/{project}
 ```
+**建议主项目和子项目分支一一对应。**
+
 提交配置
 ```shell
-git add specification/{your-project-name} ./.gitmodules
-git commit -m "[build]: add {your-project-name} submodule"
+git add specification/{project} ./.gitmodules
+git commit -m "[build]: add {project} submodule"
 git push origin master
 ```
 

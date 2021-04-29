@@ -45,9 +45,15 @@ compare_job:
     - docker
   script:
     # 获取待 merge 的分支名称
-    - 'CI_TARGET_BRANCH_NAME=$(curl -LsS -H "PRIVATE-TOKEN: $CI_ACCESS_TOKEN" "http://$CI_SERVER_HOST/api/v4/projects/$CI_PROJECT_ID/merge_requests?source_branch=$CI_COMMIT_REF_NAME" | jq --raw-output ".[0].target_branch")' 
+    - >
+     CI_TARGET_BRANCH_NAME=$(
+      curl -LsS -H "PRIVATE-TOKEN: $PERSONAL_ACCESS_TOKEN" 
+      "http://$CI_SERVER_HOST/api/v4/projects/$CI_PROJECT_ID/merge_requests?source_branch=$CI_COMMIT_REF_NAME" | 
+      jq --raw-output ".[0].target_branch")    
     # 拉取代码
-    - git clone -b $CI_TARGET_BRANCH_NAME http://gitlab-ci-token:${CI_JOB_TOKEN}@$CI_SERVER_HOST/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME.git ./target_branch
+    # 其中自定义参数(setting--CI/CD--variables)：
+    #   GITLAB_SERVER_HOST：gitlab url
+    - git clone -b $CI_TARGET_BRANCH_NAME https://gitlab-ci-token:${CI_JOB_TOKEN}@$GITLAB_SERVER_HOST/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME.git ./target_branch
     - java -jar /app/openapi-diff-cli.jar --fail-on-incompatible 
       ./specs/api-profile.json ./target_branch/specs/api-profile.json
   rules:
@@ -61,9 +67,25 @@ code_gen_job:
     - docker
   script:
     # 调用 api 触发 code-gen pipeline
-    - curl --request POST  -F token=${CI_DOC_PIPLINE_TOKEN}  -F ref=master -F "variables[CI_SPECS_TOKEN]=$CI_ACCESS_TOKEN"  -F "variables[CI_SPECS_PATH]=$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME"  http://$CI_SERVER_HOST/api/v4/projects/${CI_DOC_PROJECT_ID}/trigger/pipeline
-    # - "curl --request POST --form token=${CI_SDK_PROJECT_TOKEN} --form ref=master http://$CI_SERVER_HOST/api/v4/projects/${CI_SDK_PROJECT_ID}/trigger/pipeline"
-    # - "curl --request POST --form token=${CI_CLI_PROJECT_TOKEN} --form ref=master http://$CI_SERVER_HOST/api/v4/projects/${CI_CLI_PROJECT_ID}/trigger/pipeline"
+    # 其中自定义参数(setting--CI/CD--variables)：
+    #   CI_DOC_PIPELINE_TOKEN：document 项目的 trigger pipeline token
+    #   CI_DOC_PROJECT_ID：document 项目的 ID
+    #   PROJECT_DEPLOY_USER: deploy username, 用于读取 specs 仓库
+    #   PROJECT_DEPLOY_TOKEN: deploy token, 用于读取 specs 仓库
+    # ------------------------
+    # trigger/pipeline 传参说明：
+    #   SPECS_PROJECT_PATH: api-specs 项目路径
+    #   SPECS_SCOPE: 解析 specs 的 scope，"private" 或 "public"
+    #   SPECS_PROJECT_SPATH: 可选，如果"specs"不在根目录的时填写。
+    - >
+      curl --request POST  
+        -F token=${CI_DOC_PIPELINE_TOKEN}  
+        -F ref=master 
+        -F "variables[SPECS_PROJECT_DEPLOY_USER]=$PROJECT_DEPLOY_USER"  
+        -F "variables[SPECS_PROJECT_DEPLOY_TOKEN]=$PROJECT_DEPLOY_TOKEN"  
+        -F "variables[SPECS_PROJECT_PATH]=$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME"  
+        -F "variables[SPECS_SCOPE]=private"  
+        https://$CI_SERVER_HOST/api/v4/projects/${CI_DOC_PROJECT_ID}/trigger/pipeline
   only:
     - master
 
@@ -81,7 +103,7 @@ image: qingcloud/openapi-tools
 
 before_script:
   # 拉取 specs 代码
-  - git clone -b master http://$CI_SPECS_USER:$CI_SPECS_TOKEN@$CI_SERVER_HOST/$CI_SPECS_PATH.git /app/api-specs
+  - git clone -b master https://$SPECS_PROJECT_DEPLOY_USER:$SPECS_PROJECT_DEPLOY_TOKEN@$CI_SERVER_HOST/$CI_SPECS_PATH.git /app/api-specs
 
 stages:
   - private
@@ -93,24 +115,28 @@ private_job:
     - docker
 
   script:
-    - SCOPE=private
+    # 其中自定义参数(setting--CI/CD--variables)：
+    #   GITLAB_SERVER_HOST：gitlab host
+    #   PERSONAL_USERNAME：用于push
+    #   PERSONAL_ACCESS_TOKEN: 用于push
     - DATE=$(date "+%Y%m%d%H%M%S")
-    - NEW_BRANCH=${CI_COMMIT_REF_NAME}_${SCOPE}_${DATE}
+    - NEW_BRANCH=${CI_COMMIT_REF_NAME}_${SPECS_SCOPE}_${DATE}
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     - git config --global user.name "${GITLAB_USER_NAME}"
     - git checkout -B $NEW_BRANCH
-    - /app/snips -f /app/api-specs/specs/api-profile.json  -t ./api/template -o ./api  -s $SCOPE
+    - /app/snips -f /app/api-specs/$SPECS_PROJECT_SPATH/specs/api-profile.json  -t ./api/template -o ./api  -s SPECS_SCOPE
     - git add ./api
-    - git commit -m "[update] auto update ${SCOPE} ${DATE}" && 
-      git push http://$CI_PERSONAL_USERNAME:$CI_PERSONAL_TORKEN@$CI_SERVER_HOST/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME.git -u $NEW_BRANCH &&
+    - >
+      git commit -m "[update] auto update ${SPECS_SCOPE} ${DATE}" && 
+      git push https://$PERSONAL_USERNAME:PERSONAL_ACCESS_TOKEN@$GITLAB_SERVER_HOST/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME.git -u $NEW_BRANCH &&
     # create merge request
-    - 'curl "http://$CI_SERVER_HOST/api/v4/projects/$CI_PROJECT_ID/merge_requests" 
+      curl "https://$CI_SERVER_HOST/api/v4/projects/$CI_PROJECT_ID/merge_requests" 
         --header "PRIVATE-TOKEN: $CI_PERSONAL_TORKEN" 
         --form "id=$CI_PROJECT_ID" 
-        --form "title=auto update ${SCOPE} ${DATE}"
+        --form "title=auto update ${SPECS_SCOPE} ${DATE}"
         --form "source_branch=$NEW_BRANCH" 
         --form "target_branch=$CI_COMMIT_REF_NAME"
-        --form "remove_source_branch=true"'
+        --form "remove_source_branch=true"
   rules:
     - if: '$CI_PIPELINE_SOURCE == "trigger"'
 ```
@@ -122,9 +148,12 @@ private_job:
 | key  | scope |comment | example | 
 | ---  | --- | --- | --- |
 | GITLAB_SERVER_HOST |  global  | gitlab 域名 | git.internal.yunify.com
-| USER_PERSONAL_ACCESS_TOKEN | owned projects | 用于调用 api，读写仓库 |  |
-| PROJECT_DEPLOY_TOKENS | project | 仅读仓库 |  |
-| TARGET_PROJECT_PIPELINE_TOKEN | project | 跨项目触发 CI
+| PROJECT_DEPLOY_TOKEN | project | 仅读仓库|  |
+| PROJECT_DEPLOY_USER | project | 仅读仓库 |  |
+| CI_DOC_PIPELINE_TOKEN | project | trigger pipeline
+| CI_DOC_PROJECT_ID | project | trigger pipeline
+| PERSONAL_USERNAME | user's projects | 用于调用 api，读写仓库
+| PERSONAL_ACCESS_TOKEN | user's projects | 用于调用 api，读写仓库
 
 
 ## Gitlab Runner
