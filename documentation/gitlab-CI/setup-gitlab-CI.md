@@ -56,10 +56,10 @@ compare_job:
     - git clone -b $CI_TARGET_BRANCH_NAME https://gitlab-ci-token:${CI_JOB_TOKEN}@$GITLAB_SERVER_HOST/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME.git ./target_branch
     - java -jar /app/openapi-diff-cli.jar --fail-on-incompatible 
       ./specs/api-profile.json ./target_branch/specs/api-profile.json
-  rules:
-    # 仅在 merge request 时触发
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-
+  only:
+    variables:
+      # 仅在 merge request 时触发
+      - $CI_PIPELINE_SOURCE == "merge_request_event"
 
 code_gen_job:
   stage: code_gen
@@ -99,20 +99,43 @@ code_gen_job:
 
 #### .gitlab-ci.yml
 ```yaml
+.functions: &functions |
+  function traverse_dir() {
+    for file in `ls $1`;do
+      if [ -d $1"/"$file ];then
+        if [ $file = "specs" ];then
+          generator $1"/"$file
+        else
+          traverse_dir $1"/"$file
+        fi
+      fi
+    done
+  } 
+  
+  function generator() {
+    SPECS_PATH=$1
+    /app/snips -f $SPECS_PATH/api-profile.json  -t ./api/template -o ./api  -s $SPECS_SCOPE
+    RET=$?
+  }
+  
+
+
 image: qingcloud/openapi-tools
 
 before_script:
-  # 拉取 specs 代码
-  - git clone -b master https://$SPECS_PROJECT_DEPLOY_USER:$SPECS_PROJECT_DEPLOY_TOKEN@$CI_SERVER_HOST/$CI_SPECS_PATH.git /app/api-specs
+  # 加载函数
+  - *functions
+  # 使用宿主机的密钥，进行验证
+  - 'command -v ssh-agent >/dev/null'
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+  - mkdir -p ~/.ssh && touch ~/.ssh/known_hosts
+  - ssh-keyscan -t rsa $GITLAB_SERVER_HOST 2>&1 >> ~/.ssh/known_hosts
+  - chmod 700 ~/.ssh && chmod 644 ~/.ssh/known_hosts
 
-stages:
-  - private
-  - public
-
-private_job:
-  stage: private
+doc_gen_job:
   tags:
-    - docker
+    - api-specs
 
   script:
     # 其中自定义参数(setting--CI/CD--variables)：
@@ -121,24 +144,34 @@ private_job:
     #   PERSONAL_ACCESS_TOKEN: 用于push
     - DATE=$(date "+%Y%m%d%H%M%S")
     - NEW_BRANCH=${CI_COMMIT_REF_NAME}_${SPECS_SCOPE}_${DATE}
+
+    - SPECS_ROOT=/app/api-specs/$SPECS_PROJECT_SPATH
+    # 拉取 specs 
+    - git clone -b master https://$SPECS_PROJECT_DEPLOY_USER:$SPECS_PROJECT_DEPLOY_TOKEN@$GITLAB_SERVER_HOST/$SPECS_PROJECT_PATH.git /app/api-specs
+
     - git config --global user.email "${GITLAB_USER_EMAIL}"
     - git config --global user.name "${GITLAB_USER_NAME}"
     - git checkout -B $NEW_BRANCH
-    - /app/snips -f /app/api-specs/$SPECS_PROJECT_SPATH/specs/api-profile.json  -t ./api/template -o ./api  -s SPECS_SCOPE
+    
+    # 遍历 specs 目录生成 
+    - traverse_dir $SPECS_ROOT 
+
     - git add ./api
     - >
-      git commit -m "[update] auto update ${SPECS_SCOPE} ${DATE}" && 
-      git push https://$PERSONAL_USERNAME:PERSONAL_ACCESS_TOKEN@$GITLAB_SERVER_HOST/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME.git -u $NEW_BRANCH &&
-    # create merge request
-      curl "https://$CI_SERVER_HOST/api/v4/projects/$CI_PROJECT_ID/merge_requests" 
-        --header "PRIVATE-TOKEN: $CI_PERSONAL_TORKEN" 
-        --form "id=$CI_PROJECT_ID" 
-        --form "title=auto update ${SPECS_SCOPE} ${DATE}"
-        --form "source_branch=$NEW_BRANCH" 
-        --form "target_branch=$CI_COMMIT_REF_NAME"
-        --form "remove_source_branch=true"
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "trigger"'
+      git commit -m "[update] auto update ${SPECS_SCOPE} ${DATE}" &&
+      git push git@$GITLAB_SERVER_HOST:$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME.git -u $NEW_BRANCH && 
+      curl "https://$GITLAB_SERVER_HOST/api/v4/projects/$CI_PROJECT_ID/merge_requests" # 通过 api 发起 merge request
+      --header "PRIVATE-TOKEN: $PERSONAL_ACCESS_TOKEN"
+      --form "id=$CI_PROJECT_ID"
+      --form "title=auto update ${SPECS_SCOPE} ${DATE}"
+      --form "source_branch=$NEW_BRANCH"
+      --form "target_branch=$CI_COMMIT_REF_NAME"
+      --form "remove_source_branch=true"
+  
+  only:
+    variables:
+      # 仅通过 trigger 
+      - $CI_PIPELINE_SOURCE == "trigger"
 ```
 ## Variables
 预定义的 CI/CD 的变量，在进行 CI/CD pipeline 时都是有效的。具体参数请参考 [官方文档](https://docs.gitlab.com/ee/ci/variables/predefined_variables.html) 。
