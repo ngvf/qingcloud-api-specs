@@ -14,6 +14,15 @@ Flags:
   -h, --help              	    help for json-pretty
   -r, --replace     bool        Replace original with update. Default false
 ```
+
+## Docker
+```shell
+docker run --volume $SPECS_PATH:/data qingcloud/openapi-tools \
+	./json-pretty  \
+	-d /data/specs  \
+	-r true
+```
+
 ### Tips
 - 如果同时传了 filePath 和 dirPath ，将忽略 dirPath 。
 - replace 为 false 的时候，会在相同目录生成 .tmp 文件；

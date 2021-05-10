@@ -8,6 +8,7 @@ RUN set -eux; \
 # utilities for keeping Debian and OpenJDK CA certificates in sync
 		ca-certificates p11-kit \
 	; \
+	apt-get install -y git curl jq ssh-client; \
 	rm -rf /var/lib/apt/lists/*
 
 ENV JAVA_HOME /usr/local/openjdk-8

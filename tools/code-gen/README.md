@@ -43,3 +43,16 @@ Flags:
   -t, --template string   Specify template files directory.
   -v, --version           Show version.
 ```
+
+## Docker
+```shell
+docker run --volume $WORK_PATH:/data:ro \
+    --volume $OUTPUT_PATH:/output \
+    --volume $TEMPLATE_PATH:/template \
+    qingcloud/openapi-tools \
+    ./snips \
+    -f /data/specs/api-profile.json \
+    -t /template    \
+    -o /output    \
+    -s private
+```
