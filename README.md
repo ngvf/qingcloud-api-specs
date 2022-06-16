@@ -96,3 +96,4 @@ git push origin master
 1. 建议各子项目，基于接口描述来自动生成 **doc/sdk/cli/request model(调用层)** 代码。 
 1. 有些 **接口/参数/返回** 是区分普通用户和管理员权限的，可通过设置“x-scope”参数区分（用于生成 **公开版和私有版** 的代码或文档），目前 snips 支持在 manifest 配置 scope。
 1. 基于接口描述生成 API 接口文档，在spec中需要有相应的 **示例** （x-example）和 **中英文描述说明**（英文默认使用 "description" 参数，中文以及其他语言在 "x-description" 中设置），目前 snips 支持在 manifest 配置 language。
+# qingcloud-api-specs
